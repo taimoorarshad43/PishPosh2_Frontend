@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL, API_ENDPOINTS } from './config/api.js';
 
 
 const AIUpload = (props) => {
@@ -36,7 +37,7 @@ const AIUpload = (props) => {
 
     try {
       // Send file to the backend endpoint for AI processing.
-      const response = await axios.post(`http://127.0.0.1:5000/upload/aiprocess`, formData, {withCredentials: true});
+      const response = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.AI_PROCESS}`, formData, {withCredentials: true});
       console.log("From AIUpload.jsx - The response we got back was ", response);
       // Populate product fields with the response data.
       setProductTitle(response.data.title || '');
@@ -59,7 +60,7 @@ const AIUpload = (props) => {
       data.append('productImage', selectedFile);
     }
     axios
-      .post(`http://127.0.0.1:5000/upload/${userId}`, data, {withCredentials: true})
+      .post(`${API_BASE_URL}${API_ENDPOINTS.UPLOAD}/${userId}`, data, {withCredentials: true})
       .then(response => {
         // Refresh the product list after successful upload or update error fields if we got any.
         console.log("From AIUpload.jsx - The response we got back was ", response);

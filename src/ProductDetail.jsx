@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
+import { API_BASE_URL, API_ENDPOINTS } from './config/api.js';
 
 import toastService from './services/toastservice';
 
@@ -22,7 +23,7 @@ const ProductDetail = () => {
         setError(null);
         setNotFound(false);
         
-        const response = await axios.get(`http://127.0.0.1:5000/v1/productsimages/${productid}`, {withCredentials: true});
+        const response = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.PRODUCT_IMAGE}/${productid}`, {withCredentials: true});
         if (response && response.data && response.data.Product) {
           const data = response.data;
           console.log(data)
@@ -57,7 +58,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchRelatedProduct = async () => {
       try {
-        const response = await axios.post(`http://127.0.0.1:5000/product/${productid}/related`, {}, {withCredentials: true});
+        const response = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.PRODUCT_RELATED}/${productid}/related`, {}, {withCredentials: true});
         if (response && response.data && response.data.RelatedProducts) {
           const data = response.data;
           console.log(data)
@@ -79,7 +80,7 @@ const ProductDetail = () => {
   // Handler to add product to the cart using a POST request.
   const handleAddToCart = async () => {
     try{
-      const response = await axios.post(`http://127.0.0.1:5000/product/${productid}/addtocart`, {}, {withCredentials: true});
+      const response = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.PRODUCT_ADD_TO_CART}/${productid}/addtocart`, {}, {withCredentials: true});
       console.log(response);
       if (response.data.status === 'success') {
         // We'll console.log as well as show a toast message based on the message we receive from the backend
@@ -98,7 +99,7 @@ const ProductDetail = () => {
   // Handler to remove product from the cart using a POST request.
   const handleRemoveFromCart = async () => {
     try{
-      const response = await axios.post(`http://127.0.0.1:5000/product/${productid}/removefromcart`, {}, {withCredentials: true});
+      const response = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.PRODUCT_REMOVE_FROM_CART}/${productid}/removefromcart`, {}, {withCredentials: true});
       console.log(response);
       if (response.data.status === 'success') {
         // We'll console.log as well as show a toast message based on the message we receive from the backend

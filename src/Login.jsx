@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toastService from './services/toastservice';
 import { useUser } from "./services/UserContext";
+import { API_BASE_URL, API_ENDPOINTS } from './config/api.js';
 
 const Login = () => {
   // Define state for form fields and any validation errors.
@@ -14,7 +15,6 @@ const Login = () => {
   // Set error fields.
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const BASE_URL = 'http://127.0.0.1:5000';
   const { login } = useUser();
 
   // Update state on input change.

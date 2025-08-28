@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL, API_ENDPOINTS } from './config/api.js';
 
 import { toast } from 'react-toastify';
 
@@ -24,7 +25,6 @@ const UserDetail = (props) => {
   const username = props.username;
   const toastId = React.useRef(null);
   const navigate = useNavigate();
-  const BASE_URL = 'http://127.0.0.1:5000';
   
     // If we're not logged in, then we don't have a username and we need to be redirected to index
     // Send a Toast message saying we're not logged in
@@ -45,7 +45,7 @@ const UserDetail = (props) => {
           setLoading(true);
           setError(null);
           
-          const response = await axios.get(`${BASE_URL}/v1/users/${userId}/products`);
+          const response = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.USERS}/${userId}/products`);
           if(response && response.data.User && response.data.User.products){
               // Set products with response data.
               const data = response.data.User.products;
@@ -101,11 +101,11 @@ const UserDetail = (props) => {
       data.append('productImage', formData.productImage);
     }
     axios
-      .post(`${BASE_URL}/upload/${userId}`, data, {withCredentials: true})
+      .post(`${API_BASE_URL}${API_ENDPOINTS.UPLOAD}/${userId}`, data, {withCredentials: true})
       .then(response => {
         // Refresh the product list after successful upload or update error fields if we got any.
         console.log("From UserDetail.jsx - The response we got back was ", response);
-        return axios.get(`${BASE_URL}/v1/users/${userId}/products`);
+        return axios.get(`${API_BASE_URL}${API_ENDPOINTS.USERS}/${userId}/products`);
       })
       .then(res => {
         if (res.data.User && res.data.User.products) {
@@ -136,7 +136,7 @@ const UserDetail = (props) => {
   // Handle product deletion
   const handleDelete = (productId) => {
     axios
-      .delete(`${BASE_URL}/product/${productId}/delete`, null, {withCredentials: true})
+      .delete(`${API_BASE_URL}/product/${productId}/delete`, null, {withCredentials: true})
       .then(response => {
         console.log("From UserDetail.jsx - The response we got back was ", response);
         setProducts(products.filter(product => product.productid !== productId));           // Deleting product from state

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button, Image } from 'react-bootstrap';
+import { API_BASE_URL, API_ENDPOINTS } from './config/api.js';
 
 const IndexPage = () => {
 
@@ -16,7 +17,7 @@ const IndexPage = () => {
         setLoading(true);
         setError(null);
         
-        const response = await axios.get('http://127.0.0.1:5000/v1/productimages');
+        const response = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.PRODUCT_IMAGES}`);
         const data = response.data;
         
         if (data && data.Products) {

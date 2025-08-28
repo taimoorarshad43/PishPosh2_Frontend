@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL, API_ENDPOINTS } from './config/api.js';
 
 const Signup = () => {
   // Define state for form fields and errors.
@@ -13,7 +14,6 @@ const Signup = () => {
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const BASE_URL = 'http://127.0.0.1:5000';
 
   // Generic onChange handler for controlled components.
   const handleChange = (e) => {
@@ -42,7 +42,7 @@ const Signup = () => {
       return;
     }
 
-    axios.post(`${BASE_URL}/signup`, formData, {withCredentials: true}).then((response) => {
+    axios.post(`${API_BASE_URL}${API_ENDPOINTS.SIGNUP}`, formData, {withCredentials: true}).then((response) => {
       console.log(response.data);
       if(response.data){
         // Redirect to the homepage after login if user is authenticated.

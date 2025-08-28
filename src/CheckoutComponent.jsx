@@ -4,6 +4,7 @@ import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { Container, Row, Col, Badge, Button, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL, API_ENDPOINTS } from './config/api.js';
 
 const CheckoutComponent = () => {
   const stripe = useStripe();
@@ -14,7 +15,7 @@ const CheckoutComponent = () => {
   // Get product data from cart endpoint and set products
   useEffect(() => {
     const getProducts = async () => {
-      const response = await axios.get('http://127.0.0.1:5000/cart', { withCredentials: true });
+      const response = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.CART}`, { withCredentials: true });
       const data = await response.data;
       console.log("From CheckoutComponent.jsx - the data is", data);
         if(data){
@@ -34,7 +35,7 @@ const CheckoutComponent = () => {
     if (!stripe || !elements) return;
 
     // We then want to clear the cart via this endpoint
-    axios.post("http://127.0.0.1:5000/cart/clearall", {}, {withCredentials: true})
+    axios.post(`${API_BASE_URL}${API_ENDPOINTS.CART_CLEAR_ALL}`, {}, {withCredentials: true})
     .then(response => {console.log("From CheckoutComponent.jsx - The response we got back was ", response);})
     .catch(error => {console.log("From CheckoutComponent.jsx - The error we got back was ", error);})
 
@@ -42,7 +43,7 @@ const CheckoutComponent = () => {
       elements,
       confirmParams: {
         // Replace with your actual return URL.
-        return_url: 'http://127.0.0.1:5173/confirmation',
+        return_url: `${window.location.origin}/confirmation`,
       },
     });
 

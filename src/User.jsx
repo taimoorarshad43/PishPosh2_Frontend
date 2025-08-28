@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { API_BASE_URL, API_ENDPOINTS } from './config/api.js';
 
 const User = () => {
   // Local state to store the user information and products list.
@@ -19,7 +20,7 @@ const User = () => {
         setError(null);
         setNotFound(false);
         
-        const response = await axios.get(`http://localhost:5000/v1/users/${userid}`);
+        const response = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.USERS}/${userid}`);
         if (response && response.data.User) {
           const data = response.data.User;
           console.log(data);
@@ -49,7 +50,7 @@ const User = () => {
 
     const getProducts = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/v1/users/${userid}/products`);
+        const response = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.USERS}/${userid}/products`);
         if (response && response.data.User && response.data.User.products) {
           const data = response.data.User.products;
           console.log(data);

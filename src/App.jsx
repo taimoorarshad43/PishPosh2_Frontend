@@ -2,6 +2,7 @@ import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { Navbar, Nav, Container } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { API_BASE_URL, API_ENDPOINTS } from './config/api.js';
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -26,7 +27,7 @@ import { useUser } from "./services/UserContext";
 const stripePromise = loadStripe('pk_test_51QIZ5VGS3ixkvINIJUDHhSJtcl3I5rpMFX4JEt228TH9Mw5vtM3yXryMfcnnOisTAt7rslzRbZDdBcPcxyIruU5400GeH1HxJH');
 // Loading stripe public key outside App component to avoid reinitializing it on every render
 
-const BASE_URL = 'http://127.0.0.1:5000';
+
 
 /* Only use useEffect if theres a logout* */
 
@@ -39,7 +40,7 @@ function App() {
 
   // Will use this to get the client secret from the backend and pass to CheckoutComponent
   useEffect(() => {
-    axios.post(`${BASE_URL}/stripe_key`, {}, {withCredentials: true})
+    axios.post(`${API_BASE_URL}${API_ENDPOINTS.STRIPE_KEY}`, {}, {withCredentials: true})
       .then(response => {
         setClientSecret(response.data);
       });
@@ -49,7 +50,7 @@ function App() {
   // Will use this to logout the user - no need for a dedicated component
   const logoutUser = async () => {
     setIsLoggingOut(true); // Set logging out state to true
-    await axios.post(`${BASE_URL}/logout`, {}, {withCredentials: true});
+    await axios.post(`${API_BASE_URL}${API_ENDPOINTS.LOGOUT}`, {}, {withCredentials: true});
     logout();
     toastService.info("Logged out!")
     // console.log('From App.jsx - Logging out');

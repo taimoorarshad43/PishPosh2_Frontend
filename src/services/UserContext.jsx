@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
-
-const BASE_URL = "http://127.0.0.1:5000";
+import { API_BASE_URL, API_ENDPOINTS } from "../config/api.js";
 
 const UserContext = createContext();
 
@@ -15,7 +14,7 @@ export function UserProvider({ children }) {
   // Fetch user info on mount
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/@me`, { withCredentials: true })
+      .get(`${API_BASE_URL}${API_ENDPOINTS.ME}`, { withCredentials: true })
       .then((response) => {
         const data = response.data.user;
         setUser(data === "null" ? null : data);
@@ -25,12 +24,12 @@ export function UserProvider({ children }) {
 
   // Login function
   const login = async (formData) => {
-    const response = await axios.post(`${BASE_URL}/login`, formData, {
+    const response = await axios.post(`${API_BASE_URL}${API_ENDPOINTS.LOGIN}`, formData, {
       withCredentials: true,
     });
     if (response.data !== "null") {
       // Fetch user info after login
-      const userRes = await axios.get(`${BASE_URL}/@me`, {
+      const userRes = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.ME}`, {
         withCredentials: true,
       });
       const data = userRes.data.user;
@@ -42,7 +41,7 @@ export function UserProvider({ children }) {
 
   // Logout function
   const logout = async () => {
-    await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
+    await axios.post(`${API_BASE_URL}${API_ENDPOINTS.LOGOUT}`, {}, { withCredentials: true });
     setUser(null);
   };
 
